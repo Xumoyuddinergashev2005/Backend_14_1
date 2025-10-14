@@ -1,9 +1,8 @@
-package org.example.backend_13_1.model;
+package org.example.backend_14_1.model;
 
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

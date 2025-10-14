@@ -1,10 +1,10 @@
-package org.example.backend_13_1.service;
+package org.example.backend_14_1.service;
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.backend_13_1.model.Book;
-import org.example.backend_13_1.repository.BookRepository;
+import org.example.backend_14_1.model.Book;
+import org.example.backend_14_1.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BookService {
+public class   BookService {
 
 
     private final BookRepository bookRepository;

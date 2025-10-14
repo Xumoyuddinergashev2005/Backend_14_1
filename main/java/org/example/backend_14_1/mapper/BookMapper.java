@@ -1,6 +1,6 @@
-package org.example.backend_13_1.mapper;
+package org.example.backend_14_1.mapper;
 
-import org.example.backend_13_1.model.Book;
+import org.example.backend_14_1.model.Book;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

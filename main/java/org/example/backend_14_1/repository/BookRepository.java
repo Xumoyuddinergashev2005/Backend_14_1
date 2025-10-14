@@ -1,15 +1,12 @@
-package org.example.backend_13_1.repository;
+package org.example.backend_14_1.repository;
 
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.backend_13_1.mapper.BookMapper;
-import org.example.backend_13_1.model.Book;
-import org.example.backend_13_1.service.BookService;
-import org.springframework.boot.autoconfigure.batch.BatchProperties;
+import org.example.backend_14_1.mapper.BookMapper;
+import org.example.backend_14_1.model.Book;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
