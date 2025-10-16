@@ -2,35 +2,45 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>📚 Book List</title>
+    <title>📚 Book Library</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* 🔹 Harakatli fon */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body {
+            background: linear-gradient(135deg, #dbeafe, #e0e7ff, #c7d2fe);
+            background-size: 300% 300%;
+            animation: gradientMove 10s ease infinite;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        .backdrop {
-            background: rgba(0, 0, 0, 0.5);
-        }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .backdrop { background: rgba(0, 0, 0, 0.4); }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex flex-col items-center py-10">
 
-<div class="bg-white shadow-2xl rounded-2xl p-8 w-11/12 max-w-5xl fade-in">
-    <h1 class="text-4xl font-bold text-center text-indigo-600 mb-8">📚 Book Library</h1>
+<body class="min-h-screen flex flex-col items-center py-10">
+
+<!-- 📘 Main Card -->
+<div class="bg-white/90 shadow-2xl rounded-2xl p-8 w-11/12 max-w-5xl fade-in backdrop-blur-md">
+    <h1 class="text-4xl font-bold text-center text-indigo-700 mb-8">📚 Book Library</h1>
 
     <div class="flex justify-end mb-6">
         <button onclick="openAddModal()"
-                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg shadow-lg transition-all duration-200">
+                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg shadow-lg transition-transform transform hover:scale-105">
             ➕ Add New Book
         </button>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+    <div class="overflow-x-auto fade-in">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow">
             <thead class="bg-indigo-600 text-white">
             <tr>
                 <th class="py-3 px-4 text-left">#</th>
@@ -42,19 +52,27 @@
                 <th class="py-3 px-4 text-center">Actions</th>
             </tr>
             </thead>
+
             <tbody>
             <tr th:each="book : ${books}" class="border-b hover:bg-indigo-50 transition">
                 <td th:text="${book.id}" class="py-3 px-4"></td>
-                <td th:text="${book.title}" class="py-3 px-4 font-medium"></td>
+                <td th:text="${book.title}" class="py-3 px-4 font-medium text-indigo-700"></td>
                 <td th:text="${book.author}" class="py-3 px-4"></td>
                 <td th:text="${book.price}" class="py-3 px-4"></td>
                 <td th:text="${book.description}" class="py-3 px-4 text-gray-600"></td>
                 <td th:text="${#temporals.format(book.createAt, 'yyyy-MM-dd HH:mm')}" class="py-3 px-4"></td>
-                <td class="py-3 px-4 text-center">
-                    <button class="bg-yellow-400 hover:bg-yellow-500 text-white py-1 px-3 rounded-lg text-sm transition-all"
+
+                <td class="py-3 px-4 text-center space-x-2">
+                    <button class="bg-yellow-400 hover:bg-yellow-500 text-white py-1 px-3 rounded-lg text-sm transition-transform transform hover:scale-105"
                             th:attr="onclick='openEditModal(' + ${book.id} + ')'">✏️ Edit</button>
-                    <button class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-lg text-sm transition-all"
-                            th:attr="onclick='deleteBook(' + ${book.id} + ')'">🗑️ Delete</button>
+
+                    <!-- 🔹 Delete form — backendga POST yuboradi -->
+                    <form th:action="@{'/book/' + ${book.id}}" method="post" class="inline">
+                        <button type="submit"
+                                class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-lg text-sm transition-transform transform hover:scale-105">
+                            🗑️ Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
             </tbody>
@@ -63,23 +81,23 @@
 </div>
 
 <!-- 🔹 Add/Edit Modal -->
-<div id="bookModal"
-     class="hidden fixed inset-0 backdrop flex justify-center items-center z-50">
+<div id="bookModal" class="hidden fixed inset-0 backdrop flex justify-center items-center z-50">
     <div class="bg-white rounded-2xl shadow-xl p-6 w-96 fade-in">
         <h2 id="modalTitle" class="text-2xl font-bold text-indigo-600 mb-4">➕ Add New Book</h2>
+
         <form th:action="@{/book/add}" method="post" class="flex flex-col gap-3">
             <input type="hidden" id="bookId" name="id">
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
                 <input name="title" id="title" type="text" placeholder="Book title"
-                       class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" required>
+                       class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" >
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Author</label>
                 <input name="author" id="author" type="text" placeholder="Author name"
-                       class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" required>
+                       class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none" >
             </div>
 
             <div>
@@ -96,11 +114,11 @@
 
             <div class="flex justify-between mt-4">
                 <button type="submit"
-                        class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg transition-all shadow-md">
+                        class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
                     💾 Save
                 </button>
                 <button type="button" onclick="closeModal()"
-                        class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-all">
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">
                     ❌ Cancel
                 </button>
             </div>
@@ -121,19 +139,13 @@
     function openEditModal(id) {
         modalTitle.textContent = "✏️ Edit Book";
         modal.classList.remove("hidden");
-        // ❗ Bu joyda keyinchalik back-end orqali kitobni olish (GET /book/{id}) qo‘shiladi
+        // keyinchalik backend orqali ma'lumot olish joyi
     }
 
     function closeModal() {
         modal.classList.add("hidden");
     }
-
-    async function deleteBook(id) {
-        if (confirm("Are you sure you want to delete this book?")) {
-            // ❗ Keyinchalik DELETE so‘rov backend bilan ulanadi
-            alert("Book with ID " + id + " deleted (mock)");
-        }
-    }
 </script>
+
 </body>
 </html>

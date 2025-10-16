@@ -6,10 +6,7 @@ import org.example.backend_14_1.model.Book;
 import org.example.backend_14_1.service.BookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/book")
@@ -31,6 +28,15 @@ public class BookController {
 
         return "addBook";
     }
+
+    @PostMapping("/{id}")
+    public String deleteBook (@PathVariable("id") long id) {
+        bookService.deleteBook(id);
+        return "redirect:/book";
+    }
+
+
+
 
 
     @PostMapping("/add")

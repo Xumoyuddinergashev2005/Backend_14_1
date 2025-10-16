@@ -73,4 +73,17 @@ public class BookRepository {
     }
 
 
+    public boolean existById(Long id) {
+
+        try {
+            String sql = "SELECT EXISTS (SELECT 1 FROM book WHERE id = ?)";
+            Long[] param = {id};
+            return  jdbcTemplate.queryForObject(sql, param, Boolean.class);
+        } catch (Exception e) {
+            log.error("Error : {}", e.getMessage());
+            return false;
+        }
+    }
+
+
 }
